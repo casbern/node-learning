@@ -7,7 +7,7 @@ server.get('/', (req, res) => {
   res.send("hello world!")
 })
 
-server.apply('/api/courses', (req, res) => {
+server.get('/api/courses', (req, res) => {
   res.send([1,2,3])
 })
 
