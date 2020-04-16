@@ -1,7 +1,7 @@
-const express = require('express') 
-//It is a function
-const server = express()
-//It is an object with many properties and methods.
+const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
+const express = require('express') //it is a function
+const server = express() //it is an object with many properties and methods.
+
 
 server.use(express.json()) //*we add this to enable parsing up json objects in the body of the request.
 
@@ -26,6 +26,14 @@ server.get('/api/courses/:id', (req,res) => {
 })
 
 server.post('/api/courses', (req,res) => {
+  //* INPUT VALIDATION
+  
+  // if(!req.body.name || req.body.length < 3) {
+  //   res.status(400).send("name is required and should be minimum of 3 characters")
+  //   return
+  // }
+
+  console.log(req.body.name)
   const course = {
     id: courses.length + 1,
     name: req.body.name
