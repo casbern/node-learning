@@ -1,4 +1,4 @@
-//const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
+const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
 const express = require('express') //it is a function
 const server = express() //it is an object with many properties and methods.
 
@@ -34,8 +34,23 @@ server.get('/api/courses/:id', (req,res) => {
 
 server.post('/api/courses', (req,res) => {  
   console.log(req.body)
-  if(!req.body.name || req.body.name.length < 3) {
-    return res.status(400).send("name is required and should be minimum of 3 characters")
+
+  //* INPUT VALIDATION
+  // if(!req.body.name || req.body.name.length < 3) {
+  //   return res.status(400).send("name is required and should be minimum of 3 characters")
+  // }
+
+  //INPUT VALIDATION WITH JOI
+  const schema = Joi.object({
+    name: Joi.string().min(3).required()
+  })
+
+  const result = schema.validate(req.body)
+  console.log(result)
+
+  if(result.error) {
+    console.log(result.error)
+    return res.status(400).send(result.error.details[0].message)
   }
 
   const course = {
