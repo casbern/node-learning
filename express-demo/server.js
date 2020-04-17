@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
+//const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
 const express = require('express') //it is a function
 const server = express() //it is an object with many properties and methods.
 
@@ -21,19 +21,16 @@ server.get('/api/courses', (req, res) => {
 
 server.get('/api/courses/:id', (req,res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
-  if(!course) res.status(404).send('Course not found')
+  if(!course) return res.status(404).send('Course not found')
+
   return res.send(course)
 })
 
 server.post('/api/courses', (req,res) => {
-  //* INPUT VALIDATION
+  if(!req.body.name || req.body.length < 3) {
+  return res.status(400).send("name is required and should be minimum of 3 characters")
+}
   
-  // if(!req.body.name || req.body.length < 3) {
-  //   res.status(400).send("name is required and should be minimum of 3 characters")
-  //   return
-  // }
-
-  console.log(req.body.name)
   const course = {
     id: courses.length + 1,
     name: req.body.name
@@ -45,15 +42,23 @@ server.post('/api/courses', (req,res) => {
 
 server.put('/api/courses/:id', (req, res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
-  if(!course) res.status(404).send('Course not found')
-  res.send(course)
+  if(!course) return res.status(404).send('Course not found')
 
   if(!req.body.name || req.body.length < 3) {
-    res.status(400).send("name is required and should be minimum of 3 characters")
-    return
+    return res.status(400).send("name is required and should be minimum of 3 characters")
   }
 
   course.name = req.body.name
+  return res.send(course)
+})
+
+server.delete('/api/courses/:id', (req,res) => {
+  const course = courses.find(course => course.id === parseInt(req.params.id))
+  if(!course) return res.status(404).send('Course not found')
+
+  const index = courses.indexOf(course)
+  courses.splice(index,1)
+
   return res.send(course)
 })
 
