@@ -12,17 +12,17 @@ const courses = [
 ]
 
 server.get('/', (req, res) => {
-  res.send("hello world!")
+  return res.send("hello world!")
 })
 
 server.get('/api/courses', (req, res) => {
-  res.send(courses)
+  return res.send(courses)
 })
 
 server.get('/api/courses/:id', (req,res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
   if(!course) res.status(404).send('Course not found')
-  res.send(course)
+  return res.send(course)
 })
 
 server.post('/api/courses', (req,res) => {
@@ -40,7 +40,21 @@ server.post('/api/courses', (req,res) => {
   }
   
   courses.push(course)
+  return res.send(course)
+})
+
+server.put('/api/courses/:id', (req, res) => {
+  const course = courses.find(course => course.id === parseInt(req.params.id))
+  if(!course) res.status(404).send('Course not found')
   res.send(course)
+
+  if(!req.body.name || req.body.length < 3) {
+    res.status(400).send("name is required and should be minimum of 3 characters")
+    return
+  }
+
+  course.name = req.body.name
+  return res.send(course)
 })
 
 
