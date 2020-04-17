@@ -5,6 +5,7 @@ const server = express() //it is an object with many properties and methods.
 
 server.use(express.json()) //*we add this to enable parsing up json objects in the body of the request.
 
+
 const courses = [
   {id: 1, name: 'courses1'},
   {id: 2, name: 'courses2'},
@@ -21,22 +22,21 @@ server.get('/api/courses', (req, res) => {
 
 server.get('/api/courses/:id', (req,res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
-  // courses are an array. 
-  // find method takes one object (course) of this array per time.
-  // you access this object (course) that find took by dot notation.
-  // and compare it with id typed on the url. 
-  // because this id is a string, you need to transform it to number first.
-  // then the comparation will succeed.
+  // courses are an array of objects. 
+  // find method receives a test function as a parameter.
+  // this function will receive one course (object) per time.
+  // when the test function returns true, then the find method will return that current course.
 
   if(!course) return res.status(404).send('It seems we do not have this course.')
 
   return res.send(course)
 })
 
-server.post('/api/courses', (req,res) => {
-  if(!req.body.name || req.body.length < 3) {
-  return res.status(400).send("name is required and should be minimum of 3 characters")
-}
+server.post('/api/courses', (req,res) => {  
+  console.log(req.body)
+  if(!req.body.name || req.body.name.length < 3) {
+    return res.status(400).send("name is required and should be minimum of 3 characters")
+  }
 
   const course = {
     id: courses.length + 1,
@@ -51,7 +51,7 @@ server.put('/api/courses/:id', (req, res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
   if(!course) return res.status(404).send('Course not found')
 
-  if(!req.body.name || req.body.length < 3) {
+  if(!req.body.name || req.body.name.length < 3) {
     return res.status(400).send("name is required and should be minimum of 3 characters")
   }
 
@@ -63,8 +63,12 @@ server.delete('/api/courses/:id', (req,res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
   if(!course) return res.status(404).send('Course not found')
 
-  const index = courses.indexOf(course)
-  courses.splice(index,1)
+  const index = courses.indexOf(course) //return the position (index) of that object in the array.
+  console.log(index)
+  
+  courses.splice(index,1) 
+  // the first one is the position of the item of array
+  //to be deleted and the second how many positions after that will be deleted.
 
   return res.send(course)
 })
