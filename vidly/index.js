@@ -23,7 +23,7 @@ server.get("/api/genres/:id", (req, res) => {
 
   if(!genre) return res.status(400).send("It seems we do not have this id you are looking for.")
 
-  return res.senæd(genre)
+  return res.send(genre)
 })
 
 
