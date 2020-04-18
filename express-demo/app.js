@@ -1,12 +1,13 @@
+const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
 const express = require('express') //it is a function
 const server = express() //it is an object with many properties and methods.
 
 server.use(express.json()) //*we add this to enable parsing up json objects in the body of the request.
 
 const courses = [
-  {id: 1, name: 'courses1'},
-  {id: 2, name: 'courses2'},
-  {id: 3, name: 'courses3'}
+  {id: 1, name: 'mosh'},
+  {id: 2, name: 'launchbase'},
+  {id: 3, name: 'gostack'}
 ]
 
 server.get('/', (req, res) => {
@@ -30,11 +31,18 @@ server.get('/api/courses/:id', (req,res) => {
 })
 
 server.post('/api/courses', (req,res) => {  
-  console.log(req.body)
 
-  //* INPUT VALIDATION
-  if(!req.body.name || req.body.name.length < 3) {
-    return res.status(400).send("name is required and should be minimum of 3 characters")
+  //INPUT VALIDATION WITH JOI
+  const schema = Joi.object({
+    name: Joi.string().min(3).required()
+  })
+
+  const result = schema.validate(req.body)
+  console.log(result)
+
+  if(result.error) {
+    console.log(result.error)
+    return res.status(400).send(result.error.details[0].message)
   }
 
   const course = {
@@ -50,9 +58,18 @@ server.put('/api/courses/:id', (req, res) => {
   const course = courses.find(course => course.id === parseInt(req.params.id))
   if(!course) return res.status(404).send('Course not found')
 
-  if(!req.body.name || req.body.name.length < 3) {
-    return res.status(400).send("name is required and should be minimum of 3 characters")
+   //INPUT VALIDATION WITH JOI
+   const schema = Joi.object({
+    name: Joi.string().min(3).required()
+  })
+
+  const result = schema.validate(req.body)
+
+  if(result.error) {
+    console.log(result.error)
+    return res.status(400).send(result.error.details[0].message)
   }
+
 
   course.name = req.body.name
   return res.send(course)
