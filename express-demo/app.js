@@ -4,7 +4,9 @@ const Joi = require('@hapi/joi') //what is returned is a class. Helps with input
 const express = require('express') //it is a function
 const app = express() //it is an object with many properties and methods.
 
+
 app.use(express.json()) //*we add this to enable parsing up json objects in the body of the request.
+
 app.use(express.urlencoded( {extended: true}))
 app.use(express.static('public'))
 
@@ -47,7 +49,6 @@ app.post('/api/courses', (req,res) => {
   })
 
   const result = schema.validate(req.body)
-  console.log(result)
 
   if(result.error) {
     console.log(result.error)
