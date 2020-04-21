@@ -1,3 +1,5 @@
+const helmet = require('helmet')
+const morgan = require('morgan')
 const logger = require('./logger')
 const authentication = require('./authentication')
 const Joi = require('@hapi/joi') //what is returned is a class. Helps with input validation.
@@ -11,9 +13,16 @@ app.use(express.urlencoded( {extended: true}))
 app.use(express.static('public'))
 
 app.use(logger)
-
 app.use(authentication)
 
+app.use(helmet())
+
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
+console.log(`app.get: ${app.get('env')}`)
+if (app.get('env') === 'development') {
+  app.use(morgan('tiny'))
+  console.log('Morgan is enabled...')
+}
 
 const courses = [
   {id: 1, name: 'mosh'},
