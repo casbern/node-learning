@@ -8,7 +8,7 @@ myOrder.on("orderProcessed", (arg) => {
   console.log("Your order was processed", arg)
 })
 
-myOrder.process()
+myOrder.process({ course: "JS Basics", id: 1 })
 
 
 
