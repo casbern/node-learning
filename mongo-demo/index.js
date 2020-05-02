@@ -38,3 +38,25 @@ mongoose.connect('mongodb://localhost/playground') //returns a promise
   }
 
   getCourses()
+
+  //Update a Document
+  async function updateCourse(id) {
+    const course = await Course.findById(id)
+
+    if(!course) return
+
+    // course.isPublished = true
+    // course.author = "another author"
+
+    //or
+
+    course.set({
+      isPublished: true,
+      author: 'another author'
+    })
+
+    const result = await course.save()
+    console.log(result)
+  }
+
+  updateCourse('5eac51561ac4c3b3577aa42f')
