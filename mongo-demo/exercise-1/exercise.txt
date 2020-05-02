@@ -1,0 +1,7 @@
+mongoimport --db mongo-exercises --collection courses --drop --file exercise-data.json --jsonArray
+
+// -- db mongo-exercises => It is the name of the databse.
+
+// --collection => Name of the collection
+
+// --jsonArray => We need that because the data is represented by using an array.
