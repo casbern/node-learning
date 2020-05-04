@@ -1,9 +1,11 @@
 const mongoose = require('mongoose')
 
+//* CONNECTING TO MONGOOSE
 mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUnifiedTopology: true}) //returns a promise
   .then( () => { console.log("Connected to MongoDB") })
   .catch( err => { console.error("Could not connect to MongoDB", err)})
 
+//* CREATING A SCHEMA => like a blueprint  
   const courseSchema = new mongoose.Schema({
     name: String,
     author: String,
@@ -12,10 +14,11 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
     isPublished: Boolean
   })
 
+//* CREATING A MODEL => like a class
   const Course = mongoose.model("Course", courseSchema)
 
+//* CREATING AN INSTANCE OF THE COURSE MODEL
   async function createCourse() {
-
     const course = new Course({
       name: "Angular",
       author: "Mosh",
@@ -27,7 +30,7 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
     //console.log(result)
   }
 
-  //* Querying documents
+//* QUERYING DOCUMENTS 
   // async function getCourses() {
   //   const courses = await Course
   //     .find({ author: "Mosh", isPublished: true })
@@ -39,7 +42,7 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
 
   // getCourses()
 
-  //* Update a Document - QUERY FIRST
+//* Update a Document - QUERY FIRST
   // async function updateCourse(id) {
   //   const course = await Course.findById(id)
 
@@ -60,7 +63,7 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
   // }
 
   //* Update a Document - UPDATE FIRST  
-  //* returns confirmation
+  //* returns an object confirmation
   // async function updateCourse(id) {
   //   const result = await Course.update( {_id: id}, { $set: {
   //     author: "Paloma",
@@ -92,5 +95,11 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
       console.log(course)
     }
 
+//* DELETING A DOCUMENT
+//* returns an object confirmation
+async function deleteCourse(id) {
+  const result = await Course.deleteOne( {_id: id } )
+  console.log(result)
+}
 
-  updateCourse('5eac51561ac4c3b3577aa42f')
+deleteCourse('5eac51561ac4c3b3577aa42f')
