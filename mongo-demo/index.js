@@ -7,11 +7,45 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
 
 //* CREATING A SCHEMA => like a blueprint  
   const courseSchema = new mongoose.Schema({
-    name: String,
+    name: { 
+      type: String, 
+      required: true,
+      minlength: 5,
+      maxlength: 255,
+      //match: /pattern/
+    },
+    categories: {
+      type: String,
+      enum: ['web', 'network'],
+      required: true
+    },
     author: String,
-    tags: [ String ],
-    date: { type: Date, default: Date.now },
-    isPublished: Boolean
+    tags: {
+      type: Array,
+      validate: {
+        // validator: function(value) {
+        //   return value && value .length > 0
+        // },
+        isAsync: true, //deprecated
+        validator: function( v, callback ) {
+          setTimeout( () => {
+            const result = v && v.length > 0
+            callback(result)
+          }, 5000)
+        },
+        message: "Course should have at least one tag"
+      }
+    },
+    isPublished: {Boolean},
+    price: { 
+      type: Number,
+      required: function() {
+        return this.isPublished
+      }
+    },
+    date: { 
+      type: Date, 
+      default: Date.now }
   })
 
 //* CREATING A MODEL => like a class
@@ -21,13 +55,21 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
   async function createCourse() {
     const course = new Course({
       name: "Angular",
+      categories: 'web',
       author: "Mosh",
-      tags: [ "angular", "frontend"],
-      isPublished: true
+      tags: [  ],
+      isPublished: true,
+      price: 10
     })
 
-    const result = await course.save()
-    console.log(result)
+    try {
+      const result = await course.save()
+      console.log(result)
+    }
+    catch(exception) {
+      console.log(exception.message)
+    }
+
   }
 
   createCourse()
