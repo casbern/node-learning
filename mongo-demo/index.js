@@ -27,8 +27,10 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
     })
 
     const result = await course.save()
-    //console.log(result)
+    console.log(result)
   }
+
+  createCourse()
 
 //* QUERYING DOCUMENTS 
   // async function getCourses() {
@@ -102,4 +104,9 @@ async function deleteCourse(id) {
   console.log(result)
 }
 
-deleteCourse('5eac51561ac4c3b3577aa42f')
+//* DELETE MORE THAN ONE DOCUMENT => Course.deleteMany() and it returns a result object confirmation.
+
+//* RETURNING DOCUMENTS DELETED => Course.findByIdAndRemove(id) //deprecated
+
+
+//deleteCourse('5eac52b55d975bb3850ff2b1')
