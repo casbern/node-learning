@@ -67,7 +67,9 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
       console.log(result)
     }
     catch(exception) {
-      console.log(exception.message)
+      for(field in exception.errors) {
+        console.log(exception.errors[field].message)
+      }
     }
 
   }
