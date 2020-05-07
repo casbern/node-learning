@@ -23,16 +23,22 @@ mongoose.connect('mongodb://localhost/playground', {useNewUrlParser: true, useUn
     tags: {
       type: Array,
       validate: {
+        //* First way to validate
         // validator: function(value) {
-        //   return value && value .length > 0
+        //   return value && value.length > 0
         // },
-        isAsync: true, //deprecated
-        validator: function( v, callback ) {
-          setTimeout( () => {
-            const result = v && v.length > 0
-            callback(result)
-          }, 5000)
-        },
+
+        //* Second way to validate
+        //isAsync: true, //!deprecated
+        // validator: function( v, callback ) {
+        //   setTimeout( () => {
+        //     const result = v && v.length > 0
+        //     callback(result)
+        //   }, 5000)
+        // },
+
+        //* First way to validate (mongoose website)
+        validator: () => Promise.resolve(false),
         message: "Course should have at least one tag"
       }
     },
