@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const genres = require("./routes/genres")
 const customers = require("./routes/customers")
+const movies = require("./routes/movies")
 const express = require("express")
 const server = express()
 
@@ -15,6 +16,7 @@ mongoose.connect('mongodb://localhost/vidly', {
 server.use(express.json())
 server.use('/api/genres', genres)
 server.use('/api/customers', customers)
+server.use('/api/movies', movies)
 
 const port = process.env.PORT || 3000
 server.listen(port, () => console.log(`Listening on port ${port}`)) 
