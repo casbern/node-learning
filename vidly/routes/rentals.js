@@ -44,7 +44,11 @@ router.post("/", async (req, res) => {
   res.send(rental)
 })
 
-
-
-
 module.exports = router
+
+//PS: What if something goes wrong between the save on line 39
+//and the save in line 42? To make sure that no problem will occur,
+//we need something called "transactions". It will make sure both will be
+//completed or none of them will apply. 
+//In mongoDB we do not have transactions, there is a technique called
+//to-phase-commit. Advanced topic related to mongo.
