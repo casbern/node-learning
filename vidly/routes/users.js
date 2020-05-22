@@ -1,5 +1,5 @@
 const { User, validate } = require('../models/user')
-const _ = requrie('lodash')
+const _ = require('lodash')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const express = require('express')

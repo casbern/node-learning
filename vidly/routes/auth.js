@@ -1,6 +1,6 @@
 const { User } = require('../models/user')
-const _ = requrie('lodash')
-const Joi = require('joi')
+const _ = require('lodash')
+const Joi = require('@hapi/joi')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const config = require("config")
