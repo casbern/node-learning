@@ -1,4 +1,5 @@
 const { Genre, validate } = require('../models/genre')
+const auth = require('../middleware/auth')
 const mongoose = require('mongoose')
 const express = require('express')
 const router = express.Router() 
@@ -16,7 +17,7 @@ router.get("/:id", async (req, res) => {
   return res.send(genre)
 })
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   //INPUT VALIDATION WITH JOI
   // const schema = Joi.object({
   //   name: Joi.string().min(3).required()
